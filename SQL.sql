@@ -185,3 +185,68 @@ ORDER BY name_empleado; -- Y Mostramelos por ORDEN alfabético
 -- Podemos usar NOT IN para excluir valores de forma más limpia
 SELECT * FROM empleados
 WHERE cargo NOT IN ("repositor", "vendedor");
+
+-- Operador BETWEEN
+-- Permite seleccionar valores dentro de un rango específico, incluyendo los extremos
+-- Se utilizan en la cláusula WHERE y puede aplicarse a números, fechas y texto
+-- Solo podemos comparar valores/tipos de datos compatibles (NyN, TxtyTxt, etc)
+
+-- Obtenemos los productos con precio entre 50 y 100
+SELECT nombre_producto, precio FROM productos
+WHERE precio BETWEEN 50 AND 100 -- El 1r valor siempre tiene que ser el menor
+
+-- Obtenemos los pedidos entre el 01/01 y 03/31 del 2025
+SELECT id_pedidos, datos_pedidos FROM pedidos
+WHERE datos_pedidos BETWEEN '01/01/2025' AND '31/03/2025';
+
+-- Obtenemos los clientes cuyo nombres estén entre 'A' y 'M' por orden alfabético
+SELECT id_cliente, datos_clientes FROM cliente
+WHERE datos_clientes BETWEEN 'A' AND 'M';
+
+-- NOT BETWEEN: EXCLUIR UN RANGO
+-- Devuelve TODOS los productos con precio MENOR a 50 y MAYOR a 100
+SELECT nombre_producto, precio FROM productos
+WHERE precio NOT BETWEEN 50 AND 100;
+
+-- Operador LIKE
+-- Se utiliza con la cláusula WHERE
+-- Busca valores que coincidan con un patrón determinado en una columna de tipo TEXT
+SELECT id_empleado, cargo FROM empleados 
+WHERE cargo LIKE 'QA'; -- Equivalente a '=' pero con búsqueda flexible.
+
+-- La diferencia está en los caracteres comodines
+-- '%': Sustituye cero o más caracteres
+-- '_': Sustitutye un solo carácter
+
+-- 'A%': Comienza con 'A'
+SELECT * FROM clientes
+WHERE nombre_clientes LIKE "J%" -- Clientes cuyo nombre comiencen con 'J'
+
+-- '%A': Terminen con 'A'
+SELECT * FROM clientes
+WHERE nombre_clientes LIKE "%A" -- Clientes cuyo nombre terminen con 'A'
+
+-- '%A%': Contiene 'A' en cualquier posición
+SELECT * FROM clientes
+WHERE nombre_clientes LIKE "%A%" -- Clientes cuyo nombre TENGAN una 'A'
+
+SELECT * FROM clientes
+WHERE nombre_clientes LIKE "%an%" -- Clientes cuyo nombre TENGAN un 'an'
+
+-- 'A_%': Comienza con 'A' y tiene al menos UN carácter
+SELECT * FROM clientes
+WHERE nombre_clientes LIKE "A_%" 
+
+-- '_%A': 'A' es el segundo carácter
+SELECT * FROM clientes
+WHERE nombre_clientes LIKE "_%A" -- Clientes cuyo nombre su segundo carácter sea un 'A'
+
+SELECT * FROM clientes
+WHERE nombre_clientes LIKE "__V__" -- Clientes cuyo nombres el tercer carácter sea una 'V'
+
+-- NOT LIKE: EXCLUIR patrones
+SELECT * FROM clientes
+WHERE nombre_clientes NOT LIKE "F%" -- Clientes cuyo nombres no comiencen con 'F'
+
+-- Operador: IS NULL / IS NOT NULL
+--
