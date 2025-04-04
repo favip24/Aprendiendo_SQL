@@ -141,6 +141,7 @@ WHERE Country = "Córdoba"
 LIMIT 5
 -- Devuelve solo los primeros 5 clientes que vivan en Córdoba
 
+-- OFFSET: Saltar de Linea
 -- Supongamos que queremos saltar un número específico de registros antes de empezar a mostrar los resultados
 SELECT * FROM clientes
 LIMIT 5 OFFSET 10 -- Devuelve 5 clientes, PERO apartir del 11avo (se saltea los primeros 10)
@@ -192,10 +193,11 @@ WHERE cargo NOT IN ("repositor", "vendedor");
 -- Solo podemos comparar valores/tipos de datos compatibles (NyN, TxtyTxt, etc)
 
 -- Obtenemos los productos con precio entre 50 y 100
+-- El 1r valor siempre tiene que ser el menor
 SELECT nombre_producto, precio FROM productos
-WHERE precio BETWEEN 50 AND 100 -- El 1r valor siempre tiene que ser el menor
+WHERE precio BETWEEN 50 AND 100
 
--- Obtenemos los pedidos entre el 01/01 y 03/31 del 2025
+-- Obtenemos los pedidos entre el 01/01 y 31/03 del 2025
 SELECT id_pedidos, datos_pedidos FROM pedidos
 WHERE datos_pedidos BETWEEN '01/01/2025' AND '31/03/2025';
 
@@ -249,4 +251,74 @@ SELECT * FROM clientes
 WHERE nombre_clientes NOT LIKE "F%" -- Clientes cuyo nombres no comiencen con 'F'
 
 -- Operador: IS NULL / IS NOT NULL
---
+-- IS NULL: Se usa para ecnotrar registros donde un campo NO TIENE ningún valor asignado
+-- IS NOT NULL: Se usa para encontrar registros donde un campo TIENE un valor asignado
+
+-- Traemos TODOS los empleados que NO tengan un mail asignado
+SELECT * FROM empleados
+WHERE correo_electrónico IS NULL
+
+-- Podemos trar TODOS los empleados que SI tengan un mail definido
+SELECT * FROM empleados
+WHERE correo_electrónico IS NOT NULL
+
+-- OPERADOR IN y NOT IN
+-- Se usa para comparar un valor con una lista de valores específicos
+-- Es una alternativa más limpia y eficiente que múltiples consultas 'OR'
+
+-- IN: Devuelve los registros donde el valor de la columna coincide con alguno de los de la lista
+-- NOT IN: Deveulve los registros donde el valor NO coincida con alguno de la lista
+
+SELECT nombre_productos FROM productos
+WHERE categoria_productos IN ("auriculares", "usb", "cargadores")
+
+SELECT nombre_producto FROM productos
+WHERE categoria_productos NOT IN ("celulares", "parlantes")
+
+-- Funciones de Agregación
+-- Son funciones que operan sobre un conjunto de filas y devuelven un único resultado
+
+-- COUNT(): Cuenta el número de filas en una consulta
+SELECT COUNT(id_productos) FROM productos -- Trae la cantidad total de registros que tiene la columna 'id_productos'
+
+-- Tenemos la cantidad total de productos existentes
+SELECT COUNT(*) AS total_productos FROM productos
+
+-- SUM(): Suma los valores de una columna numérica
+SELECT SUM(precio) FROM Products -- Calcula el total de la suma de todos los productos
+
+-- Tenemos la suma total del precio del prodcuto con ID 5
+SELECT SUM(Price * Unit) FROM productos
+WHERE ProductID = 5
+
+-- AVG(): Calcula el promedio de una columna numérica
+SELECT AVG(Price) FROM productos
+
+-- ROUND: Redoneamos el promedio de la columna
+SELECT ROUND(AVG(Price)) FROM productos
+
+-- MAX(): Devuelve el valor máximo en una columna
+-- MIN(): Devuelve el valor mínimo en una columna
+SELECT MAX(Price), MIN(Price) FROM productos
+
+SELECT nombre_producto, MIN(Price) FROM productos
+WHERE id_productos = 4 -- Devuelve el producto con el precio de menor valor con ID-4
+
+SELECT nombre_producto, MAX(Price) FROM productos
+WHERE id_productos = 4 -- Devuelve el producto con el precio de mayor valor con ID-4
+
+-- GROUP BY
+-- Se usa para agrupar filas que tienen los mismos valores en una o más columnas
+-- Se utiliza junto a las funciones de agregación vistas anteriormente
+
+SELECT id_categoria, AVG(precio_productos) FROM productos -- Devuelve el promedio del precio del campo id_categoria 
+GROUP BY id_categoria -- Devuelve el promedio de los precio PERO AGRUPADOS POR ID de CATEGORÍA
+ORDER BY precio DESC -- Devuelve los promedios ORDENADOS de forma DESCENDENTE
+
+-- HAVING
+-- Se usa para filtrar resultados después de agruparlos 
+-- porque WHERE filtra ANTES, y HAVING filtra DESPUÉS
+
+SELECT id_categoria, AVG(precio_productos) FROM producto -- Devuelve el promedio
+GROUP BY id_categoria -- Los agrupa por ID
+HAVING AVG(precio_productos) < 100 -- FILTRA los productos con ID de promedio MENOR a 100
