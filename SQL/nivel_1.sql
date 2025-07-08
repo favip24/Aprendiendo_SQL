@@ -38,4 +38,4 @@ WHERE id_usuario = 3 -- Modificamos el valor de dos o más campo específico
 TRUNCATE TABLE usuarios -- Elimina todos los registros de la tabla
 DELETE FROM usuarios WHERE id_usuarios = 5 -- Eliminar los registros que cumplan la condición (el cliente con id: 5)
 DELETE FROM usuarios -- Eliminar todos los datos de la tabla 'usuarios'
-ALTER TABLE usuarios DROP COLUMN altura -- Elimnar una columna específica
+ALTER TABLE usuarios DROP altura -- Elimnar una columna específica
