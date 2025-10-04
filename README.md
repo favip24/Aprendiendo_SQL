@@ -1,4 +1,4 @@
-# Ampliando mis conocimientos en Testing QA con SQL y Postman #
+# Ampliando mis conocimientos en Testing QA con SQL #
 
 *SQL (Trabajando con SQLite)*
 - Creación y gestión de bases de datos 
